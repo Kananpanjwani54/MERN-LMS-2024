@@ -110,15 +110,6 @@ export async function createPaymentService(formData) {
   return data;
 }
 
-// Correct keys to match backend: paypalOrderId and orderId
-export async function captureAndFinalizePaymentService({ paypalOrderId, orderId }) {
-  const { data } = await axiosInstance.post(`/student/order/capture`, {
-    paypalOrderId,
-    orderId,
-  });
-
-  return data;
-}
 
 export async function fetchStudentBoughtCoursesService(studentId) {
   const { data } = await axiosInstance.get(
@@ -136,11 +127,16 @@ export async function getCurrentCourseProgressService(userId, courseId) {
   return data;
 }
 
-export async function markLectureAfterPaypalPayment(paypalOrderId) {
+export async function markLectureAsViewedService(userId, courseId, lectureId) {
   const { data } = await axiosInstance.post(
     `/student/course-progress/mark-lecture-viewed`,
-    { paypalOrderId }
+    {
+      userId,
+      courseId,
+      lectureId,
+    }
   );
+
   return data;
 }
 
@@ -152,6 +148,15 @@ export async function resetCourseProgressService(userId, courseId) {
       courseId,
     }
   );
+
+  return data;
+}
+
+export async function captureAndFinalizePaymentService({ paypalOrderId, orderId }) {
+  const { data } = await axiosInstance.post(`/student/order/capture`, {
+    paypalOrderId,
+    orderId,
+  });
 
   return data;
 }

@@ -3,19 +3,24 @@ const StudentCourses = require("../../models/StudentCourses");
 const getCoursesByStudentId = async (req, res) => {
   try {
     const { studentId } = req.params;
+
+    // Find courses for the student
     const studentBoughtCourses = await StudentCourses.findOne({
       userId: studentId,
-    });
+    }).populate("courses.courseId"); // optional: populate course details
 
-    res.status(200).json({
+    // If user has no record, return empty array
+    const courses = studentBoughtCourses?.courses || [];
+
+    return res.status(200).json({
       success: true,
-      data: studentBoughtCourses.courses,
+      data: courses,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
+    console.error("❌ Error fetching student courses:", error);
+    return res.status(500).json({
       success: false,
-      message: "Some error occured!",
+      message: "Internal server error",
     });
   }
 };
