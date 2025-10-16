@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}`,
+  baseURL: "https://lms-backend-omrf.onrender.com",
 });
 
 axiosInstance.interceptors.request.use(
